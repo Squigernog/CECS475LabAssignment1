@@ -22,8 +22,7 @@ namespace Stock
         public static ReaderWriterLockSlim myLock = new ReaderWriterLockSlim();
         //readonly string docPath = @"C:\Users\Documents\CECS 475\Lab3_output.txt"; 
 
-        readonly string destPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
-"Lab1_output.txt");
+        readonly string destPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Lab1_output.txt");
 
         public string titles = "Broker".PadRight(10) + "Stock".PadRight(15) +
             "Value".PadRight(10) + "Changes".PadRight(10) + "Date and Time"; 
@@ -46,7 +45,7 @@ namespace Stock
         public void AddStock(Stock stock)
         {
             stocks.Add(stock); // add stock to list of stocks
-            stock.____________________________________; // register new stock to subscriber
+            stock.Activate(); // activate new stock
         } 
 //--------------------------------------------------------------------------------------------------------------------- 
  
@@ -59,19 +58,24 @@ namespace Stock
         {
             try
             {    //LOCK Mechanism 
-                ______________________________;
+                //______________________________;
+                myLock.EnterWriteLock();
                 Stock newStock = (Stock)sender;
                 //string statement; 
                 //!NOTE!: Check out C#events, pg.4 
                 // Display the output to the console windows      
-                Console.WriteLine(BrokerName.PadRight(16)______________________________________________);
+                Console.WriteLine(BrokerName.PadRight(16) + newStock.StockName.PadRight(20) + newStock.CurrentValue.ToString().PadRight(16) + newStock.NumChanges.ToString().PadRight(16) 
+                    + DateTime.Now.ToString().PadRight(16));
                 //Display the output to the file 
-                using (StreamWriter outputFile = ________________________________________________) ;
+                using (StreamWriter outputFile = new StreamWriter(Path.Combine(destPath, "StockUpdates.txt")))
                 {
-                    ________________________________________________;
+                    //________________________________________________;
+                    outputFile.WriteLine(BrokerName.PadRight(16) + newStock.StockName.PadRight(20) + newStock.CurrentValue.ToString().PadRight(16) + newStock.NumChanges.ToString().PadRight(16)
+                    + DateTime.Now.ToString().PadRight(16));
                 }
                 //RELEASE the lock 
-                ____________________;
+                //____________________;
+                myLock.ExitWriteLock();
             }
             finally
             {

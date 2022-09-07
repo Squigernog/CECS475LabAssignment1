@@ -51,7 +51,7 @@ namespace Stock
             _currentValue = InitialValue;
             _maxChange = maxChange;
             _threshold = threshold;
-            this._thread = new Thread(new ThreadStart());
+            this._thread = new Thread(ChangeStockValue); // new thread for stock events
             _thread.Start(); // Start thread
         } 
  
@@ -90,7 +90,7 @@ namespace Stock
             if ((CurrentValue - InitialValue) > Threshold)
             {  //RAISE THE EVENT 
                 //_____ Invoke _____________________________________________________;
-                StockEvent?.Invoke(this, StockEvent);
+                StockEvent?.Invoke(this, StockEvent); // what goes in second param?
 
 
 
